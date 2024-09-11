@@ -1,0 +1,84 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2
+      author: dsukau
+      changes:
+        - createTable:
+            tableName: property
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: owner_id
+                  type: bigint
+                  constraints:
+                    nullable: true
+              - column:
+                  name: address
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: city
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: state
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: postcode
+                  type: varchar(10)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: property_type
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: bedrooms
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: bathrooms
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: parking_spaces
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: square_meters
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: varchar(1000)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: created_timestamp
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: property
+            baseColumnNames: owner_id
+            constraintName: fk_property_owner
+            referencedTableName: user
+            referencedColumnNames: id
+
+      rollback:
+        - dropTable:
+            tableName: property

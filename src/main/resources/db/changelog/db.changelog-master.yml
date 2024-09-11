@@ -1,0 +1,16 @@
+databaseChangeLog:
+  - include:
+      file: /db/changelog/1.create-user-table.yml
+  - include:
+      file: /db/changelog/2.create-property-table.yml
+  - include:
+      file: /db/changelog/3.create-review-table.yml
+  - include:
+      file: /db/changelog/4.create-ratingcriteria-table.yml
+  - include:
+      file: /db/changelog/5.create-reviewrating-table.yml
+  - include:
+      file: /db/changelog/6.create-ownershipclaim-table.yml
+  - include:
+      file: /db/changelog/7.create-leasedocument-table.yml
+

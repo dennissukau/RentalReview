@@ -1,0 +1,47 @@
+databaseChangeLog:
+  - changeSet:
+      id: 5
+      author: dsukau
+      changes:
+        - createTable:
+            tableName: review_rating
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: review_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: criteria_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: rating
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: comment
+                  type: text
+        - addForeignKeyConstraint:
+            baseTableName: review_rating
+            baseColumnNames: review_id
+            constraintName: fk_review_rating_review
+            referencedTableName: review
+            referencedColumnNames: id
+        - addForeignKeyConstraint:
+            baseTableName: review_rating
+            baseColumnNames: criteria_id
+            constraintName: fk_review_rating_criteria
+            referencedTableName: rating_criteria
+            referencedColumnNames: id
+      rollback:
+        - dropTable:
+            tableName: review_rating

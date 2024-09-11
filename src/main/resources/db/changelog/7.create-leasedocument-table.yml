@@ -1,0 +1,49 @@
+databaseChangeLog:
+  - changeSet:
+      id: 7
+      author: dsukau
+      changes:
+        - createTable:
+            tableName: lease_document
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: tenant_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: property_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: document_url
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: uploaded_at
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: lease_document
+            baseColumnNames: tenant_id
+            constraintName: fk_lease_document_tenant
+            referencedTableName: user
+            referencedColumnNames: id
+        - addForeignKeyConstraint:
+            baseTableName: lease_document
+            baseColumnNames: property_id
+            constraintName: fk_lease_document_property
+            referencedTableName: property
+            referencedColumnNames: id
+      rollback:
+        - dropTable:
+            tableName: lease_document

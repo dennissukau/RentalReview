@@ -1,0 +1,46 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3
+      author: dsukau
+      changes:
+        - createTable:
+            tableName: review
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: tenant_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: property_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_timestamp
+                  type: timestamp
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: review
+            baseColumnNames: tenant_id
+            constraintName: fk_review_tenant
+            referencedTableName: user
+            referencedColumnNames: id
+
+        - addForeignKeyConstraint:
+            baseTableName: review
+            baseColumnNames: property_id
+            constraintName: fk_review_property
+            referencedTableName: property
+            referencedColumnNames: id
+            onDelete: CASCADE
+      rollback:
+        - dropTable:
+            tableName: review

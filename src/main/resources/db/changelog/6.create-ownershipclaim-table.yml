@@ -1,0 +1,51 @@
+databaseChangeLog:
+  - changeSet:
+      id: 6
+      author: dsukau
+      changes:
+        - createTable:
+            tableName: ownership_claim
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: owner_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: property_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: document_url
+                  type: varchar(255)
+              - column:
+                  name: status
+                  type: varchar(50)
+              - column:
+                  name: submitted_at
+                  type: varchar(255)
+              - column:
+                  name: verified_at
+                  type: varchar(255)
+        - addForeignKeyConstraint:
+            baseTableName: ownership_claim
+            baseColumnNames: owner_id
+            constraintName: fk_ownership_claim_owner
+            referencedTableName: user
+            referencedColumnNames: id
+        - addForeignKeyConstraint:
+            baseTableName: ownership_claim
+            baseColumnNames: property_id
+            constraintName: fk_ownership_claim_property
+            referencedTableName: property
+            referencedColumnNames: id
+      rollback:
+        - dropTable:
+            tableName: ownership_claim

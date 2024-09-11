@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: 5
+      author: dsukau
+      changes:
+        - createTable:
+            tableName: rating_criteria
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+      rollback:
+        - dropTable:
+            tableName: rating_criteria
