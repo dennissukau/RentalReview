@@ -28,7 +28,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: uploaded_at
+                  name: created_timestamp
                   type: varchar(255)
                   constraints:
                     nullable: false
