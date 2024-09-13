@@ -13,6 +13,16 @@ databaseChangeLog:
                   constraints:
                     primaryKey: true
               - column:
+                   name: first_name
+                   type: varchar(255)
+                   constraints:
+                    nullable: false
+              - column:
+                  name: last_name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
                   name: email
                   type: varchar(255)
                   constraints:
@@ -37,6 +47,7 @@ databaseChangeLog:
                   type: varchar(255)
                   constraints:
                     nullable: false
+              # add lastUpdatedTimestamp
       rollback:
         - dropTable:
             tableName: user

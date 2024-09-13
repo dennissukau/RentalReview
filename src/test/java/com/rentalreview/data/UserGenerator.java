@@ -10,8 +10,13 @@ public class UserGenerator {
 
     public static User randomUser() {
         var username = randomAlphanumeric(10);
+        var firstName = randomAlphanumeric(8);
+        var lastName = randomAlphanumeric(10);
+
         return User.builder()
                 .username(username)
+                .firstName(firstName)
+                .lastName(lastName)
                 .email("%s@email.com".formatted(username))
                 .role("role")
                 .passwordHash(randomAlphanumeric(20))

@@ -33,7 +33,6 @@ databaseChangeLog:
             constraintName: fk_review_tenant
             referencedTableName: user
             referencedColumnNames: id
-
         - addForeignKeyConstraint:
             baseTableName: review
             baseColumnNames: property_id

@@ -31,5 +31,4 @@ class UserRepositoryTest extends TestBase {
         assertThat(users).hasSize(1);
         assertThat(users.get(0).getUsername()).isEqualTo(user.getUsername());
     }
-
 }

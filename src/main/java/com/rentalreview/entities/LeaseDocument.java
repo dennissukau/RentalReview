@@ -29,6 +29,5 @@ public class LeaseDocument extends BaseEntity {
     private Property property;
 
     private String documentUrl;
-
 }
 
