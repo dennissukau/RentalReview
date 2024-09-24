@@ -1,42 +1,42 @@
 package com.rentalreview.controller;
 
+
+import com.rentalreview.dto.ReviewRequestDto;
 import com.rentalreview.dto.UserDto;
-import com.rentalreview.entities.User;
-import com.rentalreview.mapper.UserMapper;
-import com.rentalreview.services.RegistrationRequest;
-import com.rentalreview.services.RegistrationService;
+import com.rentalreview.entities.Review;
+import com.rentalreview.services.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.http.ResponseEntity.badRequest;
 import static org.springframework.http.ResponseEntity.internalServerError;
 
-@RestController
-@RequestMapping(path = "api/registration")
+@Controller
 @RequiredArgsConstructor
-public class RegistrationController {
+@RequestMapping("api/reviews")
+public class ReviewController {
 
-    private final RegistrationService registrationService;
+    private final ReviewService reviewService;
 
     @PostMapping
-    public ResponseEntity<UserDto> register(@RequestBody RegistrationRequest request) {
-        User registeredUser;
+    public ResponseEntity<Object> postReview(@RequestBody ReviewRequestDto reviewRequest) {
+        Review review;
         try {
-            registeredUser = registrationService.register(request);
+            review = reviewService.createReview(reviewRequest);
 
-            //convert the above into this
-            var userDto = UserMapper.INSTANCE.userToUserDto(registeredUser);
-
-            return ResponseEntity.ok(userDto);
+            return ResponseEntity.ok(review);
         } catch (DuplicateKeyException e) {
             return badRequest().build();
         } catch (Exception e) {
             return internalServerError().build();
         }
     }
+
 }
+
+

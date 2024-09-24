@@ -22,7 +22,6 @@ public class Property extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "owner_id")
     private User owner;
-
     private String address;
     private String city;
     private String state;

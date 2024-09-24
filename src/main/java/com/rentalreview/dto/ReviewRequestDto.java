@@ -1,14 +1,16 @@
 package com.rentalreview.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 
 import java.util.List;
 
-@Getter
+@Data
 @AllArgsConstructor
 public class ReviewRequestDto {
     private Long propertyID;
     private Long userID;
     private List<ReviewRatingDto> ratings;
+
+
 }
