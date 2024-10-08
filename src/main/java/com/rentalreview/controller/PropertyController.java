@@ -1,5 +1,6 @@
 package com.rentalreview.controller;
 
+import com.rentalreview.dto.ReviewDto;
 import com.rentalreview.entities.Review;
 import com.rentalreview.services.ReviewService;
 import lombok.RequiredArgsConstructor;
@@ -21,9 +22,8 @@ public class PropertyController {
     public final ReviewService reviewService;
 
     @GetMapping("/property/{propertyId}/reviews")
-    public ResponseEntity<List<Review>> getReviewsByProperty(@PathVariable Long propertyId) {
-        List<Review> reviews = reviewService.getReviewsByProperty(propertyId);
+    public ResponseEntity<List<ReviewDto>> getReviewsByProperty(@PathVariable Long propertyId) {
+        List<ReviewDto> reviews = reviewService.getReviewsByProperty(propertyId);
         return new ResponseEntity<>(reviews, HttpStatus.OK);
     }
-
 }

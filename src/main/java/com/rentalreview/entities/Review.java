@@ -30,6 +30,6 @@ public class Review extends BaseEntity {
     @JoinColumn(name = "property_id")
     private Property property;
 
-    @OneToMany(mappedBy = "review")
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
     private Set<ReviewRating> reviewRatings;
 }

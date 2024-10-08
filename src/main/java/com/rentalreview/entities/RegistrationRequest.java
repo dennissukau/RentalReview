@@ -1,4 +1,4 @@
-package com.rentalreview.services;
+package com.rentalreview.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

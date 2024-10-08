@@ -1,20 +1,18 @@
 package com.rentalreview.controller;
 
 
+import com.rentalreview.dto.ReviewDto;
 import com.rentalreview.dto.ReviewRequestDto;
-import com.rentalreview.dto.UserDto;
-import com.rentalreview.entities.Review;
+import com.rentalreview.mapper.ReviewMapper;
 import com.rentalreview.services.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-import static org.springframework.http.ResponseEntity.badRequest;
-import static org.springframework.http.ResponseEntity.internalServerError;
+
+import static org.springframework.http.ResponseEntity.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -22,13 +20,13 @@ import static org.springframework.http.ResponseEntity.internalServerError;
 public class ReviewController {
 
     private final ReviewService reviewService;
+    private final ReviewMapper reviewMapper;
 
     @PostMapping
-    public ResponseEntity<Object> postReview(@RequestBody ReviewRequestDto reviewRequest) {
-        Review review;
+    public ResponseEntity<ReviewDto> postReview(@RequestBody ReviewRequestDto reviewRequest) {
+        ReviewDto review;
         try {
             review = reviewService.createReview(reviewRequest);
-
             return ResponseEntity.ok(review);
         } catch (DuplicateKeyException e) {
             return badRequest().build();
@@ -37,6 +35,22 @@ public class ReviewController {
         }
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ReviewDto> getReviewById(@PathVariable Long id) {
+        try {
+            ReviewDto review = reviewService.getReviewById(id);
+            return ResponseEntity.ok(review);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteReview(@PathVariable Long id) {
+        reviewService.deleteReview(id);
+        return ResponseEntity.noContent().build();
+    }
 }
+
 
 

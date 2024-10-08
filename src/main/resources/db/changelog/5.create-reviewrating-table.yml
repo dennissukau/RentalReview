@@ -18,7 +18,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: criteria_id
+                  name: rating_criteria_id
                   type: bigint
                   constraints:
                     nullable: false
@@ -38,7 +38,7 @@ databaseChangeLog:
             referencedColumnNames: id
         - addForeignKeyConstraint:
             baseTableName: review_rating
-            baseColumnNames: criteria_id
+            baseColumnNames: rating_criteria_id
             constraintName: fk_review_rating_criteria
             referencedTableName: rating_criteria
             referencedColumnNames: id

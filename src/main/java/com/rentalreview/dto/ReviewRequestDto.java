@@ -11,6 +11,4 @@ public class ReviewRequestDto {
     private Long propertyID;
     private Long userID;
     private List<ReviewRatingDto> ratings;
-
-
 }

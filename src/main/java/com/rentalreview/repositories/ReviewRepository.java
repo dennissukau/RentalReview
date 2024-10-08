@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, Long> {
     List<Review> findByProperty(Property property);
-    List<Review> findByUser(User user);
+    List<Review> findByTenant(User user);
 }
  

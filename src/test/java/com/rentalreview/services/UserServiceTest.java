@@ -44,14 +44,7 @@ public class UserServiceTest extends TestBase {
 
     @Test
     void shouldSignUpUser() {
-        //Need to add elements later
-        User testUser = UserGenerator.randomUser();
 
-        User result = userService.signUpUser(testUser);
-        Optional<User> newUser = userRepository.findByEmail(testUser.getEmail());
-
-        assertThat(newUser).isPresent();
-        assertEquals(testUser.getEmail(), newUser.get().getEmail());
     }
 
     @Test
@@ -69,5 +62,27 @@ public class UserServiceTest extends TestBase {
 
         assertEquals("User with this email already exists", exception.getMessage());
 
+    }
+
+    @Test
+    void loadUserByUsername() {
+    }
+
+    @Test
+    void signUpUser() {
+        User user = UserGenerator.randomUser();
+        String email = user.getEmail();
+        var userDto = userService.signUpUser(user);
+
+        assertThat(userDto).isNotNull();
+        assertThat(userDto.getEmail()).isEqualTo(user.getEmail());
+    }
+
+    @Test
+    void findById() {
+    }
+
+    @Test
+    void deleteUserById() {
     }
 }

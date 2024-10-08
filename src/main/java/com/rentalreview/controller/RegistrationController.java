@@ -1,9 +1,7 @@
 package com.rentalreview.controller;
 
 import com.rentalreview.dto.UserDto;
-import com.rentalreview.entities.User;
-import com.rentalreview.mapper.UserMapper;
-import com.rentalreview.services.RegistrationRequest;
+import com.rentalreview.entities.RegistrationRequest;
 import com.rentalreview.services.RegistrationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
@@ -25,14 +23,10 @@ public class RegistrationController {
 
     @PostMapping
     public ResponseEntity<UserDto> register(@RequestBody RegistrationRequest request) {
-        User registeredUser;
+        UserDto registeredUser;
         try {
             registeredUser = registrationService.register(request);
-
-            //convert the above into this
-            var userDto = UserMapper.INSTANCE.userToUserDto(registeredUser);
-
-            return ResponseEntity.ok(userDto);
+            return ResponseEntity.ok(registeredUser);
         } catch (DuplicateKeyException e) {
             return badRequest().build();
         } catch (Exception e) {

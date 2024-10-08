@@ -13,17 +13,18 @@ import lombok.*;
 
 public class ReviewRating {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @EmbeddedId
+    private ReviewRatingId reviewRatingId;
 
     @ManyToOne
+    @MapsId("reviewId")
     @JoinColumn(name = "review_id")
     private Review review;
 
     @ManyToOne
-    @JoinColumn(name = "criteria_id")
-    private RatingCriteria criteria;
+    @MapsId("ratingCriteriaId")
+    @JoinColumn(name = "rating_criteria_id")
+    private RatingCriteria ratingCriteria;
 
     private int rating;  // Rating between 0 and 10
 
