@@ -1,7 +1,6 @@
 package com.rentalreview.services;
 
 import com.rentalreview.dto.ReviewRatingDto;
-import com.rentalreview.dto.ReviewRequestDto;
 import com.rentalreview.entities.Review;
 import com.rentalreview.entities.ReviewRating;
 import com.rentalreview.entities.ReviewRatingId;
@@ -12,6 +11,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -21,7 +22,7 @@ public class ReviewRatingService {
     private final ReviewRatingRepository reviewRatingRepository;
 
     @Transactional
-    public List<ReviewRating> createReviewRatings(List<ReviewRatingDto> reviewRequest, Review savedReview) {
+    public Set<ReviewRating> createReviewRatings(List<ReviewRatingDto> reviewRequest, Review savedReview) {
 
         return reviewRequest.stream()
                 .map(reviewRatingDto -> {
@@ -29,22 +30,25 @@ public class ReviewRatingService {
                     var reviewCriteria = ratingCriteriaRepository.findById(reviewRatingDto.getCriteriaId()).orElseThrow(() -> new IllegalArgumentException("Invalid criterion ID"));
                     var id = new ReviewRatingId(savedReview.getId(), reviewRatingDto.getCriteriaId());
                     reviewRating.setReviewRatingId(id);
+                    reviewRating.setReview(savedReview);
+                    reviewRating.setRatingCriteria(reviewCriteria);
                     reviewRating.setComment(reviewRatingDto.getComment());
                     reviewRating.setRating(reviewRatingDto.getScore());
 
                     return reviewRating;
-                }).toList();
+                }).collect(Collectors.toSet());
     }
 
     @Transactional
     public ReviewRating updateToReviewRating(Long reviewId, ReviewRatingDto updatedReviewRating){
         var id = new ReviewRatingId(reviewId, updatedReviewRating.getCriteriaId());
 
-        var reviewToUpdate = reviewRatingRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("This Rating was not found"));
+        var reviewRatingToUpdate = reviewRatingRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("This Rating was not found"));
 
-        reviewToUpdate.setRating(updatedReviewRating.getScore());
-        reviewToUpdate.setComment(updatedReviewRating.getComment());
+        reviewRatingToUpdate.setRating(updatedReviewRating.getScore());
+        reviewRatingToUpdate.setComment(updatedReviewRating.getComment());
 
-        return reviewRatingRepository.save(reviewToUpdate);
+        return reviewRatingRepository.save(reviewRatingToUpdate);
     }
 }
+

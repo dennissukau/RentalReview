@@ -27,8 +27,9 @@ public class UserServiceTest extends TestBase {
     @Autowired
     private UserService userService;
 
+
     @AfterEach
-    public void cleanUp(){
+    public void cleanUp() {
         userRepository.deleteAll();
     }
 
@@ -44,7 +45,14 @@ public class UserServiceTest extends TestBase {
 
     @Test
     void shouldSignUpUser() {
+        User user = UserGenerator.randomUser();
+        var id = user.getId();
+        String email = user.getEmail();
+        var userDto = userService.signUpUser(user);
 
+        assertThat(userDto).isNotNull();
+        assertThat(userDto.getEmail()).isEqualTo(user.getEmail());
+        assertThat(userRepository.findAll().size()).isEqualTo(1);
     }
 
     @Test
@@ -60,29 +68,27 @@ public class UserServiceTest extends TestBase {
             userService.signUpUser(newUser);
         });
 
-        assertEquals("User with this email already exists", exception.getMessage());
-
+        assertEquals("User with %s email already exists".formatted(user.getEmail()), exception.getMessage());
     }
 
     @Test
-    void loadUserByUsername() {
+    void shouldFindById() {
+        User newUser = UserGenerator.randomUser();
+
+        var savedUser = userService.signUpUser(newUser);
+        var userDto = userService.findById(savedUser.getId());
+
+        assertThat(userDto).isPresent();
+        assertThat(userDto.get().getEmail()).isEqualTo(newUser.getEmail());
     }
 
     @Test
-    void signUpUser() {
-        User user = UserGenerator.randomUser();
-        String email = user.getEmail();
-        var userDto = userService.signUpUser(user);
+    void shouldDeleteUserById() {
+        User newUser = UserGenerator.randomUser();
+        var savedUser = userService.signUpUser(newUser);
 
-        assertThat(userDto).isNotNull();
-        assertThat(userDto.getEmail()).isEqualTo(user.getEmail());
-    }
+        userService.deleteUserById(savedUser.getId());
 
-    @Test
-    void findById() {
-    }
-
-    @Test
-    void deleteUserById() {
+        assertThat(userRepository.findAll().size()).isEqualTo(0);
     }
 }

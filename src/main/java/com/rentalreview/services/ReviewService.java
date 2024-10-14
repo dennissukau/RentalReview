@@ -4,7 +4,6 @@ import com.rentalreview.dto.ReviewDto;
 import com.rentalreview.dto.ReviewRequestDto;
 import com.rentalreview.entities.Property;
 import com.rentalreview.entities.Review;
-import com.rentalreview.entities.ReviewRating;
 import com.rentalreview.entities.User;
 import com.rentalreview.mapper.ReviewMapper;
 import com.rentalreview.repositories.*;
@@ -12,6 +11,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,6 +31,7 @@ public class ReviewService {
         return reviewRepository.findAll();
     }
 
+    @Transactional
     public List<ReviewDto> getReviewsByProperty(Long propertyId) {
         Property property = propertyRepository.findById(propertyId)
                 .orElseThrow(() -> new IllegalArgumentException("Property not found"));
@@ -40,6 +41,7 @@ public class ReviewService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public List<ReviewDto> getReviewsByUser(Long userId) {
         //Find user first
         User user = userRepository.findById(userId)
@@ -52,6 +54,7 @@ public class ReviewService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public ReviewDto getReviewById(Long reviewId) {
         var review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new IllegalArgumentException("Review not found"));
@@ -68,17 +71,20 @@ public class ReviewService {
         var review = Review.builder()
                 .tenant(user)
                 .property(property)
+                .createdTimestamp(LocalDateTime.now())
                 .build();
-        //Save the review in the database
-        var savedReview = reviewRepository.save(review);
         //Populate the List within review with the ratings
         var reviewRatings = reviewRatingService.createReviewRatings(reviewRequest.getRatings(), review);
+        //Save the review in the database with all Ratings for each Criterion
+        review.setReviewRatings(reviewRatings);
+        var savedReview = reviewRepository.save(review);
         //Save all the reviewRatings of this review
         reviewRatingRepository.saveAll((reviewRatings));
 
         return reviewMapper.reviewToReviewDto(savedReview);
     }
 
+    @Transactional
     public void deleteReview(Long reviewId) {
         var reviewToDelete = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new IllegalArgumentException("Review not found"));

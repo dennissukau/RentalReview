@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -32,4 +31,11 @@ public class Property extends BaseEntity{
     private int parkingSpaces;
     private int squareMeters;
     private String description;
+
+    @Override
+    public String toString() {
+        return "Property(id=" + getId() + ", address=" + getAddress() +
+                ", city=" + getCity() + ", propertyType=" + getPropertyType() +
+                ", owner=" + getOwner() + ")";
+    }
 }
