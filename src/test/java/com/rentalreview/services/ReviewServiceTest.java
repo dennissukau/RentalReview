@@ -51,7 +51,7 @@ class ReviewServiceTest extends TestBase {
     @BeforeEach
     void setUpTestData() {
         testDataGenerator = new TestDataGenerator(userRepository, propertyRepository, reviewRepository, ratingCriteriaRepository);
-        testDataGenerator.populateRatingCriteria(4);
+         testDataGenerator.populateRatingCriteria(4);
         assertThat(ratingCriteriaRepository.findAll().size()).isEqualTo(4);
 
         IntStream.range(0, 5).forEach(i -> {
@@ -61,6 +61,7 @@ class ReviewServiceTest extends TestBase {
         });
 
         testReviewRatingDto = testDataGenerator.generateReviewRatingDtos(ratingCriteriaRepository);
+        assertThat(testReviewRatingDto).isNotEmpty();
     }
 
     @AfterEach
